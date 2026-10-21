@@ -110,27 +110,40 @@ The following screenshots demonstrate the application workflow.
 ## Project Structure
 
 ```text
+
 predictive-maintenance-diagnosis/
 ├── apps/
-│   ├── api/              # FastAPI application
-│   ├── ingestion/        # OPC-UA simulator and ingestion client
-│   ├── models/           # Database models and seeding
-│   ├── explainability/   # SHAP and diagnostic reasoning
-│   ├── web/              # Web routes and templates
-│   └── ...
+│   ├── api/                  # FastAPI application, routes, schemas, authentication
+│   ├── ingestion/            # OPC-UA simulator and ingestion client
+│   ├── models/               # ML model, database models, prediction logic
+│   ├── pipeline/             # End-to-end diagnostic pipeline
+│   ├── explainability/       # SHAP, feature interpretation, root-cause analysis
+│   ├── knowledge/            # Fault knowledge base and diagnostic rules
+│   ├── services/             # Email notifications and integrations
+│   ├── storage/              # Report storage and persistence
+│   ├── web/                  # Web routes, templates, CSS, PDF generation
+│   └── config.py             # Application configuration
+├── src/
+│   └── explainability/       # Additional explainability modules
+├── notebooks/                # EDA, model training, SHAP, pipeline experiments
+├── data/
+│   ├── raw/                  # Raw sensor data (not tracked by Git)
+│   └── processed/            # Processed datasets (not tracked by Git)
+├── storage/
+│   └── reports/              # Generated PDF reports (not tracked by Git)
 ├── docs/
 │   ├── architecture/
 │   │   └── global_architecture.png
-│   └── screenshots/
-├── storage/
-│   └── reports/          # Generated PDF reports
-├── tests/                # Automated tests, if present
-├── requirements.txt
+│   └── screenshots/          # Application screenshots
+├── tests/                    # Automated tests
+├── create_tables.py          # Database initialization
+├── test_email.py             # Email integration test
+├── requirements.txt          # Python dependencies
+├── .env.example              # Environment variable template
 ├── .gitignore
 └── README.md
-```
 
-*The tree is illustrative; adjust it to match the actual repository structure.*
+```
 
 ## Getting Started
 
