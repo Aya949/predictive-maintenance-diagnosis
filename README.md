@@ -217,7 +217,6 @@ The project includes model development and comparison, signal feature engineerin
 
 Model performance should be reported using measured evaluation results, including appropriate classification metrics and a clearly defined test split.
 
-> Add your final test accuracy, macro-F1 score, confusion matrix, and model comparison here once the figures have been verified against your evaluation results.
 
 ## Limitations and Future Work
 
