@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}JESA Maintenance Intelligence{% endblock %}</title>
+
+    <link rel="stylesheet" href="/static/style.css?v=2">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+{% block body %}
+
+<div class="app-shell">
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <!-- Brand -->
+        <div class="sidebar-brand">
+
+            <div class="brand-mark">
+                <span class="brand-mark-inner">J</span>
+            </div>
+
+            <div class="brand-text">
+                <strong>JESA</strong>
+                <span>Maintenance Intelligence</span>
+            </div>
+
+        </div>
+
+
+        <!-- ================= WORKSPACE ================= -->
+
+        <div class="sidebar-section-label">
+            WORKSPACE
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <!-- Dashboard -->
+            <a
+                href="/dashboard"
+                class="nav-item {% if request.url.path == '/dashboard' %}active{% endif %}"
+            >
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+
+            <!-- Diagnoses -->
+            <a
+                href="/dashboard"
+                class="nav-item {% if request.url.path.startswith('/reading') %}active{% endif %}"
+            >
+                <span class="nav-icon">◫</span>
+                <span>Diagnoses</span>
+            </a>
+
+
+            <!-- Reports -->
+            <a
+                href="/reports"
+                class="nav-item {% if request.url.path.startswith('/reports') %}active{% endif %}"
+            >
+                <span class="nav-icon">▣</span>
+                <span>Reports</span>
+            </a>
+
+        </nav>
+
+
+        <!-- ================= SYSTEM ================= -->
+
+        <div class="sidebar-section-label">
+            SYSTEM
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <!-- Settings -->
+            <a
+                href="/settings"
+                class="nav-item {% if request.url.path == '/settings' %}active{% endif %}"
+            >
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+
+
+            <!-- Help -->
+            <a
+                href="/help"
+                class="nav-item {% if request.url.path == '/help' %}active{% endif %}"
+            >
+                <span class="nav-icon">?</span>
+                <span>Help &amp; Support</span>
+            </a>
+
+
+            <!-- Administration: ADMIN ONLY -->
+            {% if user and user.role == "administrator" %}
+
+            <a
+                href="/admin/users"
+                class="nav-item {% if request.url.path.startswith('/admin') %}active{% endif %}"
+            >
+                <span class="nav-icon">♙</span>
+                <span>Administration</span>
+            </a>
+
+            {% endif %}
+
+        </nav>
+
+
+        <div class="sidebar-spacer"></div>
+
+
+        <!-- ================= USER ================= -->
+
+        {% if user %}
+
+        <div class="sidebar-user">
+
+            <div class="avatar">
+                {{ user.email[0] | upper }}
+            </div>
+
+            <div class="user-info">
+
+                <strong>
+                    {{ user.email.split('@')[0] }}
+                </strong>
+
+                <span>
+                    {{ user.email }}
+                </span>
+
+                <!-- Role -->
+                <small
+                    style="
+                        display:block;
+                        margin-top:4px;
+                        font-size:10px;
+                        text-transform:uppercase;
+                        letter-spacing:.06em;
+                        opacity:.65;
+                    "
+                >
+                    {{ user.role }}
+                </small>
+
+            </div>
+
+            <a
+                href="/logout"
+                class="logout-icon"
+                title="Log out"
+            >
+                ↪
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+        <!-- Top header -->
+
+        <header class="top-header">
+
+            <button
+                class="mobile-menu"
+                id="mobileMenu"
+                type="button"
+            >
+                ☰
+            </button>
+
+            <div class="header-title">
+
+                {% block header %}
+
+                <span class="eyebrow">
+                    MAINTENANCE INTELLIGENCE
+                </span>
+
+                <h1>
+                    Operations Overview
+                </h1>
+
+                {% endblock %}
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <div class="system-status">
+
+                    <span class="status-dot"></span>
+
+                    <span>
+                        Diagnostic engine online
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- Page -->
+
+        <section class="content-container">
+
+            {% block content %}{% endblock %}
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- ================= MOBILE MENU ================= -->
+
+<script>
+
+const mobileMenu =
+    document.getElementById("mobileMenu");
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const overlay =
+    document.getElementById("sidebarOverlay");
+
+
+if (mobileMenu) {
+
+    mobileMenu.addEventListener("click", () => {
+
+        sidebar.classList.toggle("open");
+        overlay.classList.toggle("show");
+
+    });
+
+}
+
+
+if (overlay) {
+
+    overlay.addEventListener("click", () => {
+
+        sidebar.classList.remove("open");
+        overlay.classList.remove("show");
+
+    });
+
+}
+
+</script>
+
+{% endblock %}
+
+</body>
+</html>

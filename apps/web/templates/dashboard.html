@@ -1,0 +1,401 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — JESA Maintenance Intelligence{% endblock %}
+
+{% block header %}
+
+<span class="eyebrow">OPERATIONS CENTER</span>
+
+<h1>Maintenance Overview</h1>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>Machine Health Dashboard</h1>
+
+    <p>
+        Monitor equipment diagnostics, identify emerging faults,
+        and review maintenance recommendations.
+    </p>
+
+</div>
+
+
+<!-- =====================================================
+     KPI STRIP
+     ===================================================== -->
+
+<div class="kpi-grid">
+
+    <div class="kpi-card">
+
+        <div class="kpi-top">
+
+            <span class="kpi-label">
+                Total readings
+            </span>
+
+            <span class="kpi-icon">
+                ◫
+            </span>
+
+        </div>
+
+        <div class="kpi-value">
+            {{ readings|length }}
+        </div>
+
+        <div class="kpi-sub">
+            Latest processed readings
+        </div>
+
+    </div>
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-top">
+
+            <span class="kpi-label">
+                Faults detected
+            </span>
+
+            <span class="kpi-icon">
+                !
+            </span>
+
+        </div>
+
+        <div class="kpi-value">
+
+            {{ readings
+                |selectattr("is_normal", "equalto", false)
+                |list
+                |length }}
+
+        </div>
+
+        <div class="kpi-sub">
+            Requires engineering attention
+        </div>
+
+    </div>
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-top">
+
+            <span class="kpi-label">
+                Normal operation
+            </span>
+
+            <span class="kpi-icon">
+                ✓
+            </span>
+
+        </div>
+
+        <div class="kpi-value">
+
+            {{ readings
+                |selectattr("is_normal", "equalto", true)
+                |list
+                |length }}
+
+        </div>
+
+        <div class="kpi-sub">
+            Machines currently classified normal
+        </div>
+
+    </div>
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-top">
+
+            <span class="kpi-label">
+                Machines monitored
+            </span>
+
+            <span class="kpi-icon">
+                ⬡
+            </span>
+
+        </div>
+
+        <div class="kpi-value">
+            {{ machines|length }}
+        </div>
+
+        <div class="kpi-sub">
+            Unique equipment identifiers
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     IMPORTANT ALERT
+     ===================================================== -->
+
+{% set high_confidence_faults = readings
+    |selectattr("is_normal", "equalto", false)
+    |selectattr("confidence", ">=", 0.90)
+    |list %}
+
+
+{% if high_confidence_faults %}
+
+<div class="alert-panel">
+
+    <div class="alert-header">
+
+        <div class="alert-icon">
+            !
+        </div>
+
+        <div>
+
+            <div class="alert-title">
+                High-confidence diagnostic alerts
+            </div>
+
+            <div class="alert-subtitle">
+                {{ high_confidence_faults|length }}
+                fault(s) detected with confidence above 90%.
+            </div>
+
+        </div>
+
+    </div>
+
+    {% for r in high_confidence_faults[:3] %}
+
+    <a href="/reading/{{ r.prediction_id }}"
+       class="cause-item"
+       style="display:block; background:white;">
+
+        <div class="cause-top">
+
+            <span class="cause-name">
+                {{ r.machine_id }}
+            </span>
+
+            <span class="likelihood">
+                {{ "%.1f"|format(r.confidence * 100) }}%
+            </span>
+
+        </div>
+
+        <div class="cause-explanation">
+
+            {{ r.predicted_class }}
+
+        </div>
+
+    </a>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+
+
+<!-- =====================================================
+     DIAGNOSIS TABLE
+     ===================================================== -->
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <div class="card-title">
+                Recent Diagnoses
+            </div>
+
+            <div class="card-subtitle">
+                Latest equipment readings processed by the diagnostic engine
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-toolbar">
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="diagnosisSearch"
+                placeholder="Search machine or diagnosis..."
+            >
+
+        </div>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        {% if readings %}
+
+        <table id="diagnosisTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Status</th>
+
+                    <th>Machine</th>
+
+                    <th>Condition</th>
+
+                    <th>Confidence</th>
+
+                    <th>Timestamp</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for r in readings %}
+
+                <tr
+                    onclick="window.location='/reading/{{ r.prediction_id }}'"
+                >
+
+                    <td>
+
+                        <span class="badge {{ 'ok' if r.is_normal else 'fault' }}">
+
+                            {{ 'NORMAL' if r.is_normal else 'FAULT' }}
+
+                        </span>
+
+                    </td>
+
+
+                    <td class="machine-id">
+
+                        {{ r.machine_id }}
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="badge {{ 'ok' if r.is_normal else 'fault' }}">
+
+                            {{ r.predicted_class }}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="confidence-bar">
+
+                            <span
+                                class="confidence-bar-fill"
+                                style="width: {{ (r.confidence * 100)|round(0) }}%;"
+                            ></span>
+
+                        </span>
+
+                        <strong>
+                            {{ "%.1f"|format(r.confidence * 100) }}%
+                        </strong>
+
+                    </td>
+
+
+                    <td class="timestamp">
+
+                        {{ r.created_at.strftime('%d %b %Y · %H:%M') }}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div style="font-size:32px;margin-bottom:12px;">
+                ◫
+            </div>
+
+            <strong>No diagnostic readings yet</strong>
+
+            <p>
+                Once the ingestion pipeline processes sensor data,
+                diagnoses will appear here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<script>
+
+const search = document.getElementById("diagnosisSearch");
+
+if (search) {
+
+    search.addEventListener("input", function () {
+
+        const query =
+            this.value.toLowerCase();
+
+        document
+            .querySelectorAll("#diagnosisTable tbody tr")
+            .forEach(row => {
+
+                row.style.display =
+                    row.innerText
+                        .toLowerCase()
+                        .includes(query)
+                        ? ""
+                        : "none";
+
+            });
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

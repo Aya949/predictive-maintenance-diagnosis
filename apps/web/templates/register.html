@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Account — JESA Maintenance Intelligence</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css?v=3"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="auth-page">
+
+
+    <section class="auth-visual">
+
+
+        <div class="auth-brand">
+
+            <div class="auth-brand-mark">
+                J
+            </div>
+
+            <div class="auth-brand-text">
+
+                <strong>
+                    JESA
+                </strong>
+
+                <span>
+                    Maintenance Intelligence
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="auth-visual-content">
+
+            <div class="auth-visual-eyebrow">
+                MAINTENANCE INTELLIGENCE
+            </div>
+
+            <h2>
+                Build a clearer view of your equipment.
+            </h2>
+
+            <p>
+                Create your workspace to review machine diagnostics,
+                analyze fault patterns, and access engineering
+                decision-support reports.
+            </p>
+
+
+            <div class="auth-feature-stack">
+
+                <div class="auth-feature">
+
+                    <div class="auth-feature-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Centralized monitoring
+                        </strong>
+
+                        <span>
+                            Keep diagnostic readings in one workspace
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="auth-feature">
+
+                    <div class="auth-feature-icon">
+                            ◫
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Diagnostic history
+                        </strong>
+
+                        <span>
+                            Review previous machine assessments
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="auth-feature">
+
+                    <div class="auth-feature-icon">
+                        ↓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Engineering reports
+                        </strong>
+
+                        <span>
+                            Generate professional diagnostic reports
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div style="
+            position:relative;
+            z-index:2;
+            color:rgba(255,255,255,.48);
+            font-size:9px;
+        ">
+
+            Secure maintenance intelligence workspace
+
+        </div>
+
+
+    </section>
+
+
+    <section class="auth-form-side">
+
+
+        <div class="auth-card">
+
+
+            <div class="auth-card-header">
+
+                <h1>
+                    Create your account
+                </h1>
+
+                <p>
+                    Set up your engineering workspace in a few seconds.
+                </p>
+
+            </div>
+
+
+            {% if request.query_params.get('error') %}
+
+            <div class="auth-error">
+
+                An account with that email already exists.
+
+            </div>
+
+            {% endif %}
+
+
+            <form
+                method="post"
+                action="/register"
+            >
+
+
+                <div class="auth-field">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="engineer@company.com"
+                        required
+                        autofocus
+                    >
+
+                </div>
+
+
+                <div class="auth-field">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-submit"
+                >
+
+                    Create account →
+
+                </button>
+
+
+            </form>
+
+
+            <div class="auth-footer">
+
+                Already have an account?
+
+                <a href="/login">
+                    Sign in
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+</body>
+</html>

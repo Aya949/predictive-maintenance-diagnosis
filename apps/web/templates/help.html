@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}
+Help & Support — JESA Maintenance Intelligence
+{% endblock %}
+
+{% block header %}
+
+<span class="eyebrow">
+    SUPPORT
+</span>
+
+<h1>
+    Help & Support
+</h1>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>
+        How can we help?
+    </h1>
+
+    <p>
+        Guidance for understanding the maintenance diagnostic platform.
+    </p>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <div class="card-title">
+                    Diagnostic workflow
+                </div>
+
+                <div class="card-subtitle">
+                    How the platform turns sensor data into maintenance insight
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div style="
+            display:grid;
+            gap:10px;
+        ">
+
+            <div class="cause-item">
+
+                <div class="cause-top">
+
+                    <span class="cause-name">
+                        01 · Sensor ingestion
+                    </span>
+
+                </div>
+
+                <div class="cause-explanation">
+                    Sensor data enters the diagnostic pipeline for analysis.
+                </div>
+
+            </div>
+
+
+            <div class="cause-item">
+
+                <div class="cause-top">
+
+                    <span class="cause-name">
+                        02 · Fault prediction
+                    </span>
+
+                </div>
+
+                <div class="cause-explanation">
+                    The trained machine-learning model predicts the most
+                    probable equipment condition.
+                </div>
+
+            </div>
+
+
+            <div class="cause-item">
+
+                <div class="cause-top">
+
+                    <span class="cause-name">
+                        03 · Explainability
+                    </span>
+
+                </div>
+
+                <div class="cause-explanation">
+                    Feature contributions help identify which signals
+                    influenced the prediction.
+                </div>
+
+            </div>
+
+
+            <div class="cause-item">
+
+                <div class="cause-top">
+
+                    <span class="cause-name">
+                        04 · Engineering reasoning
+                    </span>
+
+                </div>
+
+                <div class="cause-explanation">
+                    Diagnostic rules connect signal patterns with
+                    engineering phenomena and probable causes.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <div class="card-title">
+                    Quick guidance
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div style="
+            display:grid;
+            gap:12px;
+        ">
+
+            <div>
+
+                <strong style="font-size:11px;">
+                    What does confidence mean?
+                </strong>
+
+                <p style="
+                    color:var(--text-secondary);
+                    font-size:10px;
+                    line-height:1.6;
+                ">
+                    It represents the model's estimated confidence
+                    in the predicted condition.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <strong style="font-size:11px;">
+                    What is a contributing factor?
+                </strong>
+
+                <p style="
+                    color:var(--text-secondary);
+                    font-size:10px;
+                    line-height:1.6;
+                ">
+                    Contributing factors are sensor-derived features
+                    identified by the explainability layer as influential
+                    for the prediction.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <strong style="font-size:11px;">
+                    When is an alert sent?
+                </strong>
+
+                <p style="
+                    color:var(--text-secondary);
+                    font-size:10px;
+                    line-height:1.6;
+                ">
+                    High-confidence non-normal diagnoses can trigger
+                    an automated maintenance report email.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Sign In — JESA Maintenance Intelligence</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css?v=3"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="auth-page">
+
+
+    <!-- LEFT VISUAL PANEL -->
+
+    <section class="auth-visual">
+
+
+        <div class="auth-brand">
+
+            <div class="auth-brand-mark">
+                J
+            </div>
+
+            <div class="auth-brand-text">
+
+                <strong>
+                    JESA
+                </strong>
+
+                <span>
+                    Maintenance Intelligence
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="auth-visual-content">
+
+            <div class="auth-visual-eyebrow">
+                ENGINEERING DIAGNOSTIC PLATFORM
+            </div>
+
+            <h2>
+                Turn machine data into maintenance decisions.
+            </h2>
+
+            <p>
+                Monitor equipment health, identify probable fault causes,
+                understand contributing signals, and support faster
+                maintenance decisions from one platform.
+            </p>
+
+
+            <div class="auth-feature-stack">
+
+                <div class="auth-feature">
+
+                    <div class="auth-feature-icon">
+                        ◇
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Intelligent diagnosis
+                        </strong>
+
+                        <span>
+                            ML-powered condition classification
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="auth-feature">
+
+                    <div class="auth-feature-icon">
+                        ◎
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Explainable results
+                        </strong>
+
+                        <span>
+                            Feature contributions and engineering reasoning
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="auth-feature">
+
+                    <div class="auth-feature-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Automated alerts
+                        </strong>
+
+                        <span>
+                            High-confidence maintenance notifications
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div style="
+            position:relative;
+            z-index:2;
+            color:rgba(255,255,255,.48);
+            font-size:9px;
+        ">
+
+            Decision-support system for industrial maintenance
+
+        </div>
+
+
+    </section>
+
+
+    <!-- RIGHT FORM -->
+
+    <section class="auth-form-side">
+
+
+        <div class="auth-card">
+
+
+            <div class="auth-card-header">
+
+                <h1>
+                    Welcome back
+                </h1>
+
+                <p>
+                    Sign in to access your maintenance intelligence workspace.
+                </p>
+
+            </div>
+
+
+            {% if request.query_params.get('error') %}
+
+            <div class="auth-error">
+
+                Incorrect email or password.
+
+            </div>
+
+            {% endif %}
+
+
+            <form
+                method="post"
+                action="/login"
+            >
+
+
+                <div class="auth-field">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="engineer@company.com"
+                        required
+                        autofocus
+                    >
+
+                </div>
+
+
+                <div class="auth-field">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-submit"
+                >
+
+                    Sign in →
+
+                </button>
+
+
+            </form>
+
+
+            <div class="auth-footer">
+
+                Don't have an account?
+
+                <a href="/register">
+                    Create an account
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+</body>
+</html>

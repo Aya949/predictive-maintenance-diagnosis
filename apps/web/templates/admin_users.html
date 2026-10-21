@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}User Management — Diagnostic Platform{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="page-header">
+        <div>
+            <h1>User Management</h1>
+            <p>Create accounts, assign roles, and manage access to the platform.</p>
+        </div>
+    </div>
+
+    {% if request.query_params.get('error') == 'exists' %}
+    <div class="error-banner">An account with that email already exists.</div>
+    {% endif %}
+
+    <div class="card" style="margin-bottom: 24px;">
+        <h2>Add User</h2>
+        <form method="post" action="/admin/users/create">
+            <div style="display: grid; grid-template-columns: 2fr 1.4fr 1.2fr auto; gap: 14px; align-items: end;">
+                <div class="field" style="margin-bottom: 0;">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="name@company.com">
+                </div>
+                <div class="field" style="margin-bottom: 0;">
+                    <label for="password">Temporary password</label>
+                    <input type="password" id="password" name="password" required minlength="6">
+                </div>
+                <div class="field" style="margin-bottom: 0;">
+                    <label for="role">Role</label>
+                    <select id="role" name="role" class="search-input" style="width: 100%;">
+                        <option value="technician">Technician</option>
+                        <option value="engineer">Engineer</option>
+                        <option value="administrator">Administrator</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" style="width: auto; padding: 11px 20px;">Add user</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-toolbar">
+        <input type="text" id="userSearch" class="search-input" placeholder="Search users...">
+    </div>
+
+    <div class="table-wrap">
+        {% if accounts %}
+        <table id="usersTable">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th style="text-align: right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for account in accounts %}
+                <tr>
+                    <td class="machine-id">{{ account.email }}</td>
+                    <td>
+                        <form method="post" action="/admin/users/{{ account.id }}/role" style="display: inline-flex; align-items: center; gap: 6px;">
+                            <select name="role" onchange="this.form.submit()" class="search-input" style="padding: 5px 10px; font-size: 12px; {% if account.id == user.id %}pointer-events: none; opacity: 0.6;{% endif %}" {% if account.id == user.id %}disabled{% endif %}>
+                                <option value="technician" {{ 'selected' if account.role == 'technician' else '' }}>Technician</option>
+                                <option value="engineer" {{ 'selected' if account.role == 'engineer' else '' }}>Engineer</option>
+                                <option value="administrator" {{ 'selected' if account.role == 'administrator' else '' }}>Administrator</option>
+                            </select>
+                        </form>
+                    </td>
+                    <td>
+                        {% if account.active %}
+                            <span class="badge ok">Active</span>
+                        {% else %}
+                            <span class="badge fault">Disabled</span>
+                        {% endif %}
+                    </td>
+                    <td class="timestamp">{{ account.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td style="text-align: right;">
+                        {% if account.id != user.id %}
+                        <form method="post" action="/admin/users/{{ account.id }}/toggle" style="display: inline;">
+                            {% if account.active %}
+                                <button type="submit" class="pdf-btn" style="background: var(--white); color: var(--red); border: 1px solid var(--border); padding: 6px 14px; font-size: 12px;">Disable</button>
+                            {% else %}
+                                <button type="submit" class="pdf-btn" style="padding: 6px 14px; font-size: 12px;">Activate</button>
+                            {% endif %}
+                        </form>
+                        {% else %}
+                        <span class="timestamp">(you)</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">No user accounts found.</div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    const searchInput = document.getElementById('userSearch');
+    const table = document.getElementById('usersTable');
+    if (searchInput && table) {
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            table.querySelectorAll('tbody tr').forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(query) ? '' : 'none';
+            });
+        });
+    }
+</script>
+{% endblock %}

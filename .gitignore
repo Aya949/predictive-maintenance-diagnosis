@@ -1,8 +1,58 @@
-﻿data/raw/*
+﻿# =========================
+# Environment and secrets
+# =========================
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# =========================
+# IDE and OS
+# =========================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# =========================
+# Data - review before publishing
+# =========================
+apps/data/raw/**
+apps/data/processed/**
+
+# Keep directory placeholders and documentation
+!apps/data/raw/.gitkeep
+!apps/data/processed/.gitkeep
+!apps/data/raw/README.md
+!apps/data/processed/README.md
+
+# Existing root-level data folders
+data/raw/*
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
-__pycache__/
-*.pyc
-.ipynb_checkpoints/
-.env
+
+# =========================
+# Generated reports
+# =========================
+storage/reports/
+reports/generated/
+
+# =========================
+# Model artifacts - review before publishing
+# =========================
+*.pth
+*.pkl
+

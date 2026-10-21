@@ -1,0 +1,445 @@
+{% extends "base.html" %}
+
+{% block title %}
+Diagnostic Report — {{ reading.machine_id }}
+{% endblock %}
+
+
+{% block header %}
+
+<span class="eyebrow">DIAGNOSTIC ANALYSIS</span>
+
+<h1>{{ reading.machine_id }}</h1>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<a href="/dashboard" class="back-link">
+    ← Back to dashboard
+</a>
+
+
+<!-- =====================================================
+     HERO
+     ===================================================== -->
+
+<div class="diagnosis-hero">
+
+    <div class="diagnosis-label">
+        DETECTED CONDITION
+    </div>
+
+    <div class="diagnosis-condition">
+
+        {{ prediction.predicted_class }}
+
+    </div>
+
+
+    <div class="diagnosis-meta">
+
+        <span class="meta-pill">
+
+            Reading #{{ reading.id }}
+
+        </span>
+
+        <span class="meta-pill">
+
+            {{ prediction.created_at.strftime('%d %b %Y · %H:%M') }}
+
+        </span>
+
+        <span class="meta-pill">
+
+            Diagnostic engine
+
+        </span>
+
+    </div>
+
+</div>
+
+
+<div style="height:18px;"></div>
+
+
+<div class="report-grid">
+
+
+    <!-- =================================================
+         LEFT COLUMN
+         ================================================= -->
+
+    <div>
+
+
+        <!-- CONFIDENCE -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <div class="card-title">
+                        Diagnostic Confidence
+                    </div>
+
+                    <div class="card-subtitle">
+                        Model confidence for the predicted condition
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="confidence-gauge">
+
+                <div
+                    class="gauge-circle"
+                    style="--confidence: {{ prediction.confidence * 360 }}deg;"
+                >
+
+                    <span class="gauge-value">
+
+                        {{ "%.1f"|format(prediction.confidence * 100) }}%
+
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong style="font-size:15px;">
+
+                        {% if prediction.confidence >= 0.90 %}
+
+                            High confidence
+
+                        {% elif prediction.confidence >= 0.70 %}
+
+                            Moderate confidence
+
+                        {% else %}
+
+                            Low confidence
+
+                        {% endif %}
+
+                    </strong>
+
+                    <p style="
+                        color:var(--text-secondary);
+                        font-size:11px;
+                        line-height:1.6;
+                    ">
+
+                        Confidence represents the model's
+                        estimated certainty for this classification.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- AI SUMMARY -->
+
+        {% if natural_summary %}
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <div class="card-title">
+                        Diagnostic Summary
+                    </div>
+
+                    <div class="card-subtitle">
+                        Engineering interpretation
+                    </div>
+
+                </div>
+
+                <span class="badge ok">
+                    AI-assisted
+                </span>
+
+            </div>
+
+            <p style="
+                margin:0;
+                color:var(--text-secondary);
+                font-size:13px;
+                line-height:1.8;
+            ">
+
+                {{ natural_summary }}
+
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- CONTRIBUTING FEATURES -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <div class="card-title">
+                        Key Contributing Factors
+                    </div>
+
+                    <div class="card-subtitle">
+                        SHAP-based feature contribution
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {% if prediction.top_features %}
+
+                {% for f in prediction.top_features %}
+
+                <div class="feature-row">
+
+                    <div>
+
+                        <span class="fname">
+                            {{ f.feature }}
+                        </span>
+
+                        <span class="fmeaning">
+                            {{ f.meaning }}
+                        </span>
+
+                    </div>
+
+                    <span class="fvalue {{ 'pos' if f.shap_value > 0 else 'neg' }}">
+
+                        {{ "%+.3f"|format(f.shap_value) }}
+
+                        ·
+
+                        {{ f.direction }}
+
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p style="color:var(--text-muted);">
+                    No feature breakdown available.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         RIGHT COLUMN
+         ================================================= -->
+
+    <div>
+
+
+        <!-- ROOT CAUSES -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <div class="card-title">
+                        Probable Root Causes
+                    </div>
+
+                    <div class="card-subtitle">
+                        Ranked engineering hypotheses
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {% if root_causes %}
+
+                {% for rc in root_causes %}
+
+                <div class="cause-item">
+
+                    <div class="cause-top">
+
+                        <span class="cause-name">
+                            {{ rc.cause }}
+                        </span>
+
+                        <span class="likelihood">
+
+                            {{ rc.likelihood }}
+
+                        </span>
+
+                    </div>
+
+
+                    {% if rc.explanation %}
+
+                    <div class="cause-explanation">
+
+                        {{ rc.explanation }}
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <div class="action">
+
+                        → {{ rc.recommended_action }}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p style="color:var(--text-muted);">
+                    No root cause information available.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- SOURCE -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <div class="card-title">
+                        Reading Information
+                    </div>
+
+                    <div class="card-subtitle">
+                        Data provenance
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div style="
+                display:grid;
+                gap:12px;
+            ">
+
+                <div>
+
+                    <span style="
+                        display:block;
+                        color:var(--text-muted);
+                        font-size:9px;
+                        text-transform:uppercase;
+                        font-weight:700;
+                    ">
+                        Machine
+                    </span>
+
+                    <strong>
+                        {{ reading.machine_id }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span style="
+                        display:block;
+                        color:var(--text-muted);
+                        font-size:9px;
+                        text-transform:uppercase;
+                        font-weight:700;
+                    ">
+                        Source
+                    </span>
+
+                    <strong>
+                        {{ reading.file_source }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="card">
+
+            <div class="card-title">
+                Report Actions
+            </div>
+
+            <div style="
+                display:flex;
+                flex-wrap:wrap;
+                gap:8px;
+                margin-top:15px;
+            ">
+
+                <a
+                    href="/reading/{{ prediction.id }}/pdf"
+                    class="btn btn-primary"
+                >
+                    ↓ Download PDF
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+{% endblock %}

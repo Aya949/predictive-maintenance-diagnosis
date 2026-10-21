@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}
+Settings — JESA Maintenance Intelligence
+{% endblock %}
+
+{% block header %}
+
+<span class="eyebrow">
+    SYSTEM
+</span>
+
+<h1>
+    Settings
+</h1>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>
+        Workspace Settings
+    </h1>
+
+    <p>
+        Manage your account and platform preferences.
+    </p>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <div class="card-title">
+                Account
+            </div>
+
+            <div class="card-subtitle">
+                Current authenticated user
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div style="
+        display:grid;
+        gap:15px;
+    ">
+
+        <div>
+
+            <div class="kpi-label">
+                EMAIL ADDRESS
+            </div>
+
+            <div style="
+                margin-top:5px;
+                font-weight:700;
+            ">
+                {{ user.email }}
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <div class="kpi-label">
+                ACCESS
+            </div>
+
+            <div style="
+                margin-top:5px;
+                color:var(--success);
+                font-weight:700;
+            ">
+                Authenticated
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <div class="card-title">
+                Platform
+            </div>
+
+            <div class="card-subtitle">
+                Diagnostic system configuration
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div style="
+        display:grid;
+        gap:12px;
+    ">
+
+        <div style="
+            padding:14px;
+            border:1px solid var(--border);
+            border-radius:10px;
+            background:var(--surface-soft);
+        ">
+
+            <strong style="font-size:12px;">
+                Diagnostic engine
+            </strong>
+
+            <div style="
+                margin-top:4px;
+                color:var(--success);
+                font-size:10px;
+                font-weight:700;
+            ">
+                ● Online
+            </div>
+
+        </div>
+
+
+        <div style="
+            padding:14px;
+            border:1px solid var(--border);
+            border-radius:10px;
+            background:var(--surface-soft);
+        ">
+
+            <strong style="font-size:12px;">
+                Maintenance alerts
+            </strong>
+
+            <div style="
+                margin-top:4px;
+                color:var(--text-secondary);
+                font-size:10px;
+            ">
+                High-confidence fault notifications enabled
+            </div>
+
+        </div>
+
+
+        <div style="
+            padding:14px;
+            border:1px solid var(--border);
+            border-radius:10px;
+            background:var(--surface-soft);
+        ">
+
+            <strong style="font-size:12px;">
+                Report generation
+            </strong>
+
+            <div style="
+                margin-top:4px;
+                color:var(--text-secondary);
+                font-size:10px;
+            ">
+                PDF diagnostic reports available
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
