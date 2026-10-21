@@ -29,7 +29,7 @@ The solution combines an OPC-UA-based data acquisition pipeline, machine learnin
 
 The platform follows a modular architecture that separates data acquisition, processing, diagnostic intelligence, explainability, and application delivery.
 
-![Global architecture of the predictive maintenance platform](docs/architecture/global_architecture.png)
+<img width="1262" height="635" alt="Screenshot 2026-09-24 193850" src="https://github.com/user-attachments/assets/b7511925-4d6b-490a-a482-fdd701272f72" />
 
 **End-to-end workflow:**
 
